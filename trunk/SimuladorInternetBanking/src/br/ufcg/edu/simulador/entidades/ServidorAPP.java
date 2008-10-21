@@ -8,20 +8,18 @@ import eduni.simjava.Sim_system;
 import eduni.simjava.distributions.ContinuousGenerator;
 import eduni.simjava.distributions.Sim_negexp_obj;
 
-public class ServidorWEB extends Sim_entity {
+public class ServidorAPP extends Sim_entity {
 	
     private Sim_stat stat;
 	
 	private Sim_port entrada, saida;
 	
-	private ContinuousGenerator geradorAtrasosA, geradorAtrasosB, geradorAtrasosC;
+	private ContinuousGenerator geradorAtrasosB, geradorAtrasosC;
 
-	public ServidorWEB(String nome, double mediaA, double mediaB, double mediaC) {
+	public ServidorAPP(String nome, double mediaB, double mediaC) {
 		super(nome);
-		geradorAtrasosA = new Sim_negexp_obj("geradorAtrasosA", mediaA);
 		geradorAtrasosB = new Sim_negexp_obj("geradorAtrasosB", mediaB);
 		geradorAtrasosC = new Sim_negexp_obj("geradorAtrasosC", mediaC);
-		add_generator(geradorAtrasosA);
 		add_generator(geradorAtrasosB);
 		add_generator(geradorAtrasosC);
 		entrada = new Sim_port("entrada");
@@ -46,9 +44,7 @@ public class ServidorWEB extends Sim_entity {
             //TODO: Ver o que fazer aqui, pois no final da simulação, chegam eventos desconhecidos.
             Object dados = e.get_data();
 			if (dados != null) {
-            	if (dados instanceof ClienteClasseA) {
-            		sim_process(geradorAtrasosA.sample());
-            	} else if (dados instanceof ClienteClasseB) {
+            	if (dados instanceof ClienteClasseB) {
             		sim_process(geradorAtrasosB.sample());
             		sim_schedule(saida, 0.0, 0, dados);
             	} else if (dados instanceof ClienteClasseC) {
