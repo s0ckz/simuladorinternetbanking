@@ -1,0 +1,43 @@
+<project name="SimuladorInternetBanking" default="compile" basedir=".">
+
+	<property name="classes" value="bin" />
+	<property name="lib" value="lib" />
+	<property name="source" value="src" />
+	<property name="jarName" value="${lib}/SimuladorInternetBanking.jar" />
+
+	<path id="simulador.class.path">
+		<fileset dir="${lib}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete dir="${classes}" />
+		<delete file="${jarName}" />
+	</target>
+	
+	<target name="compile">
+		<mkdir dir="${classes}"/>
+		<javac srcdir="${source}" destdir="${classes}" debug="true" optimize="on" classpathref="simulador.class.path" />
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="${jarName}" basedir="${classes}" />
+	</target>
+	
+	<target name="rodarSimulador" depends="jar">
+		<java classname="br.ufcg.edu.simulador.SimuladorInternetBanking" fork="true" classpathref="simulador.class.path">
+			<jvmarg value="-Xms128M"/>
+			<jvmarg value="-Xmx512M"/>
+		</java>
+	</target>
+	
+	<target name="visualizarGraficos" depends="rodarSimulador">
+		<java classname="SJGV" fork="true" classpathref="simulador.class.path">
+			<jvmarg value="-Xms128M"/>
+			<jvmarg value="-Xmx512M"/>
+			<arg value="sim_graphs.sjg"/>
+		</java>
+	</target>
+
+</project>
