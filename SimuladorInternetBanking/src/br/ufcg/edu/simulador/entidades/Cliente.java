@@ -6,7 +6,7 @@ import eduni.simjava.Sim_system;
 import eduni.simjava.distributions.ContinuousGenerator;
 import eduni.simjava.distributions.Sim_negexp_obj;
 
-public class Cliente extends Sim_entity {
+public abstract class Cliente extends Sim_entity {
 
 	private Sim_port saida;
 
@@ -21,8 +21,8 @@ public class Cliente extends Sim_entity {
 	}
 
 	public void body() {
-		while (Sim_system.running()) {
-			sim_schedule(saida, 0.0, 0);
+		while (Sim_system.running()) {;
+			sim_schedule(saida, 0.0, 0, this);
 			sim_pause(geradorClientes.sample());
 		}
 	}
