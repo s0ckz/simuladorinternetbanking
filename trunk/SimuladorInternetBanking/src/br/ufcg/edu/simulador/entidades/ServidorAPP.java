@@ -16,10 +16,10 @@ public class ServidorAPP extends Sim_entity {
 	
 	private ContinuousGenerator geradorAtrasosB, geradorAtrasosC;
 
-	public ServidorAPP(String nome, double mediaB, double mediaC) {
+	public ServidorAPP(String nome, double taxaB, double taxaC) {
 		super(nome);
-		geradorAtrasosB = new Sim_negexp_obj("geradorAtrasosB", mediaB);
-		geradorAtrasosC = new Sim_negexp_obj("geradorAtrasosC", mediaC);
+		geradorAtrasosB = new Sim_negexp_obj("geradorAtrasosB", 1 / taxaB);
+		geradorAtrasosC = new Sim_negexp_obj("geradorAtrasosC", 1 / taxaC);
 		add_generator(geradorAtrasosB);
 		add_generator(geradorAtrasosC);
 		entrada = new Sim_port("entrada");

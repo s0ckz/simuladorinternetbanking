@@ -16,10 +16,10 @@ public class ServidorBD extends Sim_entity {
 	
 	private ContinuousGenerator geradorAtrasosB, geradorAtrasosC;
 
-	public ServidorBD(String nome, double mediaB, double mediaC) {
+	public ServidorBD(String nome, double taxaB, double taxaC) {
 		super(nome);
-		geradorAtrasosB = new Sim_negexp_obj("geradorAtrasosB", mediaB);
-		geradorAtrasosC = new Sim_negexp_obj("geradorAtrasosC", mediaC);
+		geradorAtrasosB = new Sim_negexp_obj("geradorAtrasosB", 1 / taxaB);
+		geradorAtrasosC = new Sim_negexp_obj("geradorAtrasosC", 1 / taxaC);
 		add_generator(geradorAtrasosB);
 		add_generator(geradorAtrasosC);
 		entrada = new Sim_port("entrada");
@@ -44,6 +44,8 @@ public class ServidorBD extends Sim_entity {
 			if (dados != null) {
             	if (dados instanceof ClienteClasseB)
             		sim_process(geradorAtrasosB.sample());
+            	else if (dados instanceof ClienteClasseC)
+            		sim_process(geradorAtrasosC.sample());
             } else
             	sim_process(0);
             sim_completed(e);

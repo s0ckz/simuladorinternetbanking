@@ -16,11 +16,11 @@ public class ServidorWEB extends Sim_entity {
 	
 	private ContinuousGenerator geradorAtrasosA, geradorAtrasosB, geradorAtrasosC;
 
-	public ServidorWEB(String nome, double mediaA, double mediaB, double mediaC) {
+	public ServidorWEB(String nome, double taxaA, double taxaB, double taxaC) {
 		super(nome);
-		geradorAtrasosA = new Sim_negexp_obj("geradorAtrasosA", mediaA);
-		geradorAtrasosB = new Sim_negexp_obj("geradorAtrasosB", mediaB);
-		geradorAtrasosC = new Sim_negexp_obj("geradorAtrasosC", mediaC);
+		geradorAtrasosA = new Sim_negexp_obj("geradorAtrasosA", 1 / taxaA);
+		geradorAtrasosB = new Sim_negexp_obj("geradorAtrasosB", 1 / taxaB);
+		geradorAtrasosC = new Sim_negexp_obj("geradorAtrasosC", 1 / taxaC);
 		add_generator(geradorAtrasosA);
 		add_generator(geradorAtrasosB);
 		add_generator(geradorAtrasosC);
