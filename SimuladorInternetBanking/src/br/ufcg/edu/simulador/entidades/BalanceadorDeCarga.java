@@ -20,9 +20,9 @@ public class BalanceadorDeCarga extends Sim_entity {
 
 	private int numeroServidores, servidorAtual = -1;
 
-	public BalanceadorDeCarga(String nome, double media, int numeroServidores) {
+	public BalanceadorDeCarga(String nome, double taxa, int numeroServidores) {
 		super(nome);
-		geradorAtrasos = new Sim_negexp_obj("geradorAtrasos", media);
+		geradorAtrasos = new Sim_negexp_obj("geradorAtrasos", 1 / taxa);
 		add_generator(geradorAtrasos);
 		entrada = new Sim_port("entrada");
 		add_port(entrada);

@@ -12,9 +12,9 @@ public abstract class Cliente extends Sim_entity {
 
 	private ContinuousGenerator geradorClientes;
 
-	public Cliente(String nome, double media) {
+	public Cliente(String nome, double taxa) {
 		super(nome);
-		geradorClientes = new Sim_negexp_obj("geradorClientes", media);
+		geradorClientes = new Sim_negexp_obj("geradorClientes", 1 / taxa);
 		add_generator(geradorClientes);
 		saida = new Sim_port("saida");
 		add_port(saida);
