@@ -32,7 +32,7 @@ setTaxaMediaProcessamentoAppC 150
 setTaxaMediaProcessamentoBdB 150
 setTaxaMediaProcessamentoBdC 100
 
-setTempoSimulacao 300
+setTempoSimulacao 500
 
 # Simulando...
 simular
@@ -76,17 +76,32 @@ expectWithin .001 0.0036 getTempoMedioServico nome="Web1"
 expectWithin .001 0.005 getTempoMedioServico nome="APP1"
 # ((0.20/30) + (0.18/18)) / 2 =~ 0.008
 expectWithin .001 0.008 getTempoMedioServico nome="BD1"
-quit
 
 # Tempo médio espera
-expectWithin .1 0.15 getTempoMedioEspera nome="Web1"
+# N = p / (1 - p) = 0.31 / 0.69 =~ 0.449
+# N = lambda * R => R = N / lambda = 0.449 / 96 => R =~ 0.0046
+# R = W + S => W = R - S => W = 0.046 - 0.0036 =~ 0.001
+expectWithin .001 0.001 getTempoMedioEspera nome="Web1"
+# N = p / (1 - p) = 0.24 / 0.76 =~ 0.315
+# N = lambda * R => R = N / lambda = 0.315 / 48 => R =~ 0.006
+# R = W + S => W = R - S => W = 0.006 - 0.005 =~ 0.0016
+expectWithin .001 0.0016 getTempoMedioEspera nome="APP1"
+# N = p / (1 - p) = 0.38 / 0.62 =~ 0.613
+# N = lambda * R => R = N / lambda = 0.613 / 48 => R =~ 0.0127
+# R = W + S => W = R - S => W = 0.0127 - 0.008 =~ 0.0047 =~ 0.005
+expectWithin .001 0.005 getTempoMedioEspera nome="BD1"
 
 # Tempo médio resposta
-expectWithin .1 0.20 getTempoMedioResposta nome="Web1"
+expectWithin .01 0.004 getTempoMedioResposta nome="Web1"
+expectWithin .01 0.006 getTempoMedioResposta nome="APP1"
+expectWithin .01 0.012 getTempoMedioResposta nome="BD1"
 
 # Tamanho médio da fila
 # A precisão está baixa pois
 # 'lambda' e 'mi' também são baixos.
-expectWithin .2 2.25 getTamanhoMedioFila nome="Web1"
+expectWithin .2 0.103 getTamanhoMedioFila nome="Web1"
+expectWithin .01 0.0768 getTamanhoMedioFila nome="APP1"
+expectWithin .01 0.25 getTamanhoMedioFila nome="BD1"
+quit
 
 quit

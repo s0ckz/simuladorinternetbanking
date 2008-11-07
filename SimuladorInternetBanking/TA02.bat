@@ -1,0 +1,1 @@
+java -cp "lib/easyaccept.jar;lib/simjava.jar;lib/SimuladorInternetBanking.jar;lib/SJGV.jar" br.ufcg.edu.simulador.TA02
