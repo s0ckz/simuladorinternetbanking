@@ -1,0 +1,61 @@
+###
+# Teste inicial, verificando algumas leis operacionais para somente um servidor web e
+# somente clientes da classe A.
+###
+
+# Modificando o valor inicial da semente para tornar essa simulação determinística
+setSemente 24995556235
+
+# Desabilitando a geração de gráficos
+setGeracaoGraficos false
+
+# Modificando o número inicial de servidores.
+# M/M/1
+setNumeroServidoresWeb 1
+setNumeroServidoresApp 0
+setNumeroServidoresBd 0
+
+# Modificando as taxas de chegada.
+setTaxaMediaChegadaA 15
+setTaxaMediaChegadaB 0
+setTaxaMediaChegadaC 0
+
+# Modificando a taxa de processamento do servidor web para clientes
+# da classe A.
+setTaxaMediaProcessamentoWebA 20
+
+setTempoSimulacao 3500
+
+# Simulando...
+simular
+
+# Verificando as métricas.
+
+# Utilização média
+expectWithin .1 0.75 getUtilizacaoMedia nome="Web1"
+
+# Taxa média de chegada
+expectWithin .1 15 getTaxaMediaChegada nome="Web1"
+
+# Vazão média
+expectWithin .1 15 getVazaoMedia nome="Web1"
+
+# Verificando se a taxa média de chegada é igual à vazão.
+lambda=getTaxaMediaChegada nome="Web1"
+expectWithin .1 ${lambda} getVazaoMedia nome="Web1"
+
+# Tempo médio serviço
+expectWithin .1 0.05 getTempoMedioServico nome="Web1"
+
+# Tempo médio espera
+expectWithin .1 0.15 getTempoMedioEspera nome="Web1"
+
+# Tempo médio resposta
+expectWithin .1 0.20 getTempoMedioResposta nome="Web1"
+
+# Tamanho médio da fila
+# A precisão está baixa pois
+# 'lambda' e 'mi' também são baixos.
+expectWithin .2 2.25 getTamanhoMedioFila nome="Web1"
+
+quit
