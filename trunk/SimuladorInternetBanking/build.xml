@@ -26,7 +26,7 @@
 	</target>
 	
 	<target name="rodarSimulador" depends="jar">
-		<java classname="br.ufcg.edu.simulador.SimuladorInternetBanking" fork="true" classpathref="simulador.class.path">
+		<java classname="br.ufcg.edu.simulador.Main" fork="true" classpathref="simulador.class.path">
 			<jvmarg value="-Xms128M"/>
 			<jvmarg value="-Xmx512M"/>
 		</java>
@@ -37,6 +37,14 @@
 			<jvmarg value="-Xms128M"/>
 			<jvmarg value="-Xmx512M"/>
 			<arg value="sim_graphs.sjg"/>
+		</java>
+	</target>
+	
+	<target name="TA01" depends="jar">
+		<echo>Iniciando testes de aceitacao 01</echo>
+		<java classpathref="simulador.class.path" classname="easyaccept.EasyAccept">
+			<arg value="br.ufcg.edu.simulador.SimuladorInternetBanking"/>
+			<arg value="acceptanceTests/TA01.txt"/>
 		</java>
 	</target>
 

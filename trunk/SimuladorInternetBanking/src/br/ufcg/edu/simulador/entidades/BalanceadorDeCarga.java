@@ -45,12 +45,14 @@ public class BalanceadorDeCarga extends Sim_entity {
 	
     public void body() {
     	while (Sim_system.running()) {
-            Sim_event e = new Sim_event();
-            sim_get_next(e);
-            servidorAtual = (servidorAtual + 1) % numeroServidores;
-			sim_schedule(saidas[servidorAtual], 0.0, 0, e.get_data());
-            sim_process(geradorAtrasos.sample());
-            sim_completed(e);
+    		if (numeroServidores > 0) {
+	            Sim_event e = new Sim_event();
+	            sim_get_next(e);
+	            servidorAtual = (servidorAtual + 1) % numeroServidores;
+				sim_schedule(saidas[servidorAtual], 0.0, 0, e.get_data());
+	            sim_process(geradorAtrasos.sample());
+	            sim_completed(e);
+    		}
     	}
     }
 
