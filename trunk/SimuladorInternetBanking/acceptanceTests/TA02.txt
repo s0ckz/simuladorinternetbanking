@@ -1,107 +1,112 @@
-###
-# Teste inicial, verificando algumas leis operacionais para um servidor web,
-# um servidor de app e um servidor de bd
-###
-
-# Modificando o valor inicial da semente para tornar essa simulação determinística
-setSemente 35265862141
-
-# Desabilitando a geração de gráficos
-setGeracaoGraficos false
-
-# Modificando o número inicial de servidores.
-# M/M/3
-setNumeroServidoresWeb 1
-setNumeroServidoresApp 1
-setNumeroServidoresBd 1
-
-# Modificando as taxas de chegada.
-setTaxaMediaChegadaA 48
-setTaxaMediaChegadaB 30
-setTaxaMediaChegadaC 18
-
-# Modificando a taxa de processamento dos servidores
-
-setTaxaMediaProcessamentoWebA 400
-setTaxaMediaProcessamentoWebB 300
-setTaxaMediaProcessamentoWebC 200
-
-setTaxaMediaProcessamentoAppB 250
-setTaxaMediaProcessamentoAppC 150
-
-setTaxaMediaProcessamentoBdB 150
-setTaxaMediaProcessamentoBdC 100
-
-setTempoSimulacao 500
-
-# Simulando...
-simular
-
-# Verificando as métricas.
-
-# Utilização média
-# (48 / 400) + (30 / 300) + (18 / 200) = 0.12 + 0.10 + 0.09 = 0.31
-expectWithin .1 0.31 getUtilizacaoMedia nome="Web1"
-# (30 / 250) + (18 / 150) = = 0.12 + 0.12 = 0.24
-expectWithin .1 0.24 getUtilizacaoMedia nome="APP1"
-# (30 / 150) + (18 / 100) = 0.20 + 0.18 = 0.38
-expectWithin .1 0.38 getUtilizacaoMedia nome="BD1"
-
-# Taxa média de chegada
-# 48 + 30 + 18
-expectWithin 1 96 getTaxaMediaChegada nome="Web1"
-# 30 + 18
-expectWithin 1 48 getTaxaMediaChegada nome="APP1"
-# 30 + 18
-expectWithin 1 48 getTaxaMediaChegada nome="BD1"
-
-# Vazão média
-# 48 + 30 + 18
-expectWithin 1 96 getVazaoMedia nome="Web1"
-# 30 + 18
-expectWithin 1 48 getVazaoMedia nome="APP1"
-# 30 + 18
-expectWithin 1 48 getVazaoMedia nome="BD1"
-
-# Tempo médio serviço
-# U(i,r) = (S(i,r) * lambda(i,r)) / m(i)
-# S(i,r) = (U(i,r) / lambda(i,r)) * m(i)
-# m(i) = 1 para todo i.
-# S(i,r) = (U(i,r) / lambda(i,r))
-#
-# Divide-se pelo número de classes no final para obter a média
-# ((0.12/48) + (0.10/30) + (0.09/18)) / 3 =~ 0.0036
-expectWithin .001 0.0036 getTempoMedioServico nome="Web1"
-# ((0.12/30) + (0.12/18)) / 2 =~ 0.005
-expectWithin .001 0.005 getTempoMedioServico nome="APP1"
-# ((0.20/30) + (0.18/18)) / 2 =~ 0.008
-expectWithin .001 0.008 getTempoMedioServico nome="BD1"
-
-# Tempo médio espera
-# N = p / (1 - p) = 0.31 / 0.69 =~ 0.449
-# N = lambda * R => R = N / lambda = 0.449 / 96 => R =~ 0.0046
-# R = W + S => W = R - S => W = 0.046 - 0.0036 =~ 0.001
-expectWithin .001 0.001 getTempoMedioEspera nome="Web1"
-# N = p / (1 - p) = 0.24 / 0.76 =~ 0.315
-# N = lambda * R => R = N / lambda = 0.315 / 48 => R =~ 0.006
-# R = W + S => W = R - S => W = 0.006 - 0.005 =~ 0.0016
-expectWithin .001 0.0016 getTempoMedioEspera nome="APP1"
-# N = p / (1 - p) = 0.38 / 0.62 =~ 0.613
-# N = lambda * R => R = N / lambda = 0.613 / 48 => R =~ 0.0127
-# R = W + S => W = R - S => W = 0.0127 - 0.008 =~ 0.0047 =~ 0.005
-expectWithin .001 0.005 getTempoMedioEspera nome="BD1"
-
-# Tempo médio resposta
-expectWithin .01 0.004 getTempoMedioResposta nome="Web1"
-expectWithin .01 0.006 getTempoMedioResposta nome="APP1"
-expectWithin .01 0.012 getTempoMedioResposta nome="BD1"
-
-# Tamanho médio da fila
-# A precisão está baixa pois
-# 'lambda' e 'mi' também são baixos.
-expectWithin .2 0.103 getTamanhoMedioFila nome="Web1"
-expectWithin .01 0.0768 getTamanhoMedioFila nome="APP1"
-expectWithin .01 0.25 getTamanhoMedioFila nome="BD1"
-quit
-
+###
+# Teste inicial, verificando algumas leis operacionais para um servidor web,
+# um servidor de app e um servidor de bd
+###
+
+# Modificando o valor inicial da semente para tornar essa simulação determinística
+setSemente 35264562131
+
+# Desabilitando a geração de gráficos
+setGeracaoGraficos false
+
+# Modificando o número inicial de servidores.
+# M/M/3
+setNumeroServidoresWeb 1
+setNumeroServidoresApp 1
+setNumeroServidoresBd 1
+
+# Modificando as taxas de chegada.
+setTaxaMediaChegadaA 48
+setTaxaMediaChegadaB 30
+setTaxaMediaChegadaC 18
+
+# Modificando a taxa de processamento dos servidores
+
+setTaxaMediaProcessamentoWebA 400
+setTaxaMediaProcessamentoWebB 300
+setTaxaMediaProcessamentoWebC 200
+
+setTaxaMediaProcessamentoAppB 250
+setTaxaMediaProcessamentoAppC 150
+
+setTaxaMediaProcessamentoBdB 150
+setTaxaMediaProcessamentoBdC 100
+
+setTempoSimulacao 500
+
+# Simulando...
+simular
+
+# Verificando as métricas.
+
+# Utilização média
+# (48 / 400) + (30 / 300) + (18 / 200) = 0.12 + 0.10 + 0.09 = 0.31
+expectWithin .1 0.31 getUtilizacaoMedia nome="Web1"
+# (30 / 250) + (18 / 150) = = 0.12 + 0.12 = 0.24
+expectWithin .1 0.24 getUtilizacaoMedia nome="APP1"
+# (30 / 150) + (18 / 100) = 0.20 + 0.18 = 0.38
+expectWithin .1 0.38 getUtilizacaoMedia nome="BD1"
+
+# Taxa média de chegada
+# 48 + 30 + 18
+expectWithin 1 96 getTaxaMediaChegada nome="Web1"
+# 30 + 18
+expectWithin 1 48 getTaxaMediaChegada nome="APP1"
+# 30 + 18
+expectWithin 1 48 getTaxaMediaChegada nome="BD1"
+
+# Vazão média
+# 48 + 30 + 18
+expectWithin 1 96 getVazaoMedia nome="Web1"
+# 30 + 18
+expectWithin 1 48 getVazaoMedia nome="APP1"
+# 30 + 18
+expectWithin 1 48 getVazaoMedia nome="BD1"
+
+# Tempo médio serviço
+# U(i,r) = (S(i,r) * lambda(i,r)) / m(i)
+# S(i,r) = (U(i,r) / lambda(i,r)) * m(i)
+# m(i) = 1 para todo i.
+# S(i,r) = (U(i,r) / lambda(i,r))
+#
+# Divide-se pelo número de classes no final para obter a média
+#pA = 48 / 96 = 0.5
+#pB = 30 / 96 = 0.3125
+#pC = 18 / 96 = 0.1875
+# 0.5*(0.12/48) + 0.3125*(0.10/30) + 0.1875*(0.09/18) =~ 0.00125 + 0.001041666666666666667 + 0.0009375  =~ 0.0032
+expectWithin .0001 0.0032 getTempoMedioServico nome="Web1"
+#pB = 30 / 48 = 0.625
+#pC = 18 / 48 = 0.375
+# 0.625*(0.12/30) + 0.375*(0.12/18) =~ 0.0025 + 0.0025 = 0.005
+expectWithin .001 0.005 getTempoMedioServico nome="APP1"
+# 0.625*(0.20/30) + 0.375*(0.18/18) =~ 0.004166666666666666667 + 0.00375 = 0.007916666666666666667 =~ 0.008
+expectWithin .001 0.008 getTempoMedioServico nome="BD1"
+
+# Tempo médio espera
+# N = p / (1 - p) = 0.31 / 0.69 =~ 0.449
+# N = lambda * R => R = N / lambda = 0.449 / 96 => R =~ 0.0046
+# R = W + S => W = R - S => W = 0.046 - 0.0036 =~ 0.001
+expectWithin .001 0.001 getTempoMedioEspera nome="Web1"
+# N = p / (1 - p) = 0.24 / 0.76 =~ 0.315
+# N = lambda * R => R = N / lambda = 0.315 / 48 => R =~ 0.006
+# R = W + S => W = R - S => W = 0.006 - 0.005 =~ 0.0016
+expectWithin .001 0.0016 getTempoMedioEspera nome="APP1"
+# N = p / (1 - p) = 0.38 / 0.62 =~ 0.613
+# N = lambda * R => R = N / lambda = 0.613 / 48 => R =~ 0.0127
+# R = W + S => W = R - S => W = 0.0127 - 0.008 =~ 0.0047 =~ 0.005
+expectWithin .001 0.005 getTempoMedioEspera nome="BD1"
+
+# Tempo médio resposta
+expectWithin .01 0.004 getTempoMedioResposta nome="Web1"
+expectWithin .01 0.006 getTempoMedioResposta nome="APP1"
+expectWithin .01 0.012 getTempoMedioResposta nome="BD1"
+
+# Tamanho médio da fila
+# A precisão está baixa pois
+# 'lambda' e 'mi' também são baixos.
+expectWithin .2 0.103 getTamanhoMedioFila nome="Web1"
+expectWithin .01 0.0768 getTamanhoMedioFila nome="APP1"
+expectWithin .01 0.25 getTamanhoMedioFila nome="BD1"
+quit
+
 quit
