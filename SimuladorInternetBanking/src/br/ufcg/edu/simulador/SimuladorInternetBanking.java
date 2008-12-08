@@ -9,9 +9,9 @@ import br.ufcg.edu.simulador.entidades.ClienteClasseC;
 import br.ufcg.edu.simulador.entidades.ServidorAPP;
 import br.ufcg.edu.simulador.entidades.ServidorBD;
 import br.ufcg.edu.simulador.entidades.ServidorWEB;
-import eduni.simjava.SJGV;
 import eduni.simjava.Sim_stat;
 import eduni.simjava.Sim_system;
+import eduni.sjgv.SJGV;
 
 
 public class SimuladorInternetBanking {
@@ -47,9 +47,12 @@ public class SimuladorInternetBanking {
 	private double taxaMediaProcessamentoBcBd = 1000;
 	private double tempoSimulacao = 50;
 	
+	private double transitorioInicial = 0.0;
+	
 	private long semente = initSemente();
 	
 	private boolean geracaoGraficos = true;
+	private boolean visualizarGraficos = true;
 
 	public void simular() {
 		Sim_system.initialise();
@@ -99,10 +102,12 @@ public class SimuladorInternetBanking {
 			Sim_system.link_ports(BALANCEADOR_DE_CARGA_B_D, SAIDA + i, nome, ENTRADA);
 		}
         Sim_system.set_termination_condition(Sim_system.TIME_ELAPSED, tempoSimulacao, true);
+        if (transitorioInicial != 0.0)
+        	Sim_system.set_transient_condition(Sim_system.TIME_ELAPSED, transitorioInicial);
 //      Sim_system.set_output_analysis(Sim_system.IND_REPLICATIONS, 5, 0.95);
         Sim_system.generate_graphs(isGeracaoGraficos());
 		Sim_system.run();
-		if (isGeracaoGraficos()) {
+		if (isGeracaoGraficos() && isVisualizarGraficos()) {
 			if (new File("sim_graphs.sjg").exists())
 				SJGV.main(new String[] { "sim_graphs.sjg" });
 			else
@@ -280,6 +285,22 @@ public class SimuladorInternetBanking {
 				return false;
 		}
 		return true;
+	}
+
+	public void setVisualizarGraficos(boolean visualizarGraficos) {
+		this.visualizarGraficos  = visualizarGraficos;
+	}
+
+	public boolean isVisualizarGraficos() {
+		return visualizarGraficos;
+	}
+
+	public double getTransitorioInicial() {
+		return transitorioInicial;
+	}
+
+	public void setTransitorioInicial(double transitorioInicial) {
+		this.transitorioInicial = transitorioInicial;
 	}
 	
 }

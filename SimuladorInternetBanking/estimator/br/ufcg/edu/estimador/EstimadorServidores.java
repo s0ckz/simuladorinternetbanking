@@ -9,63 +9,110 @@ public class EstimadorServidores {
 	private static int NUMERO_MAXIMO_SERVIDORES = 16;
 	private static double[][] TAXAS_CHEGADA_EM_MEDIA = { { 100, 50, 30 },
 			{ 300, 200, 200 }, { 400, 100, 300 } };
-	private static double[] TAXAS_PROCESSAMENTO_WEB_EM_MEDIA = { 50, 25, 20 };
-	private static double[] TAXAS_PROCESSAMENTO_APP_EM_MEDIA = { 20, 15 };
-	private static double[] TAXAS_PROCESSAMENTO_BD_EM_MEDIA = { 18, 12 };
+	private static double[] TAXAS_PROCESSAMENTO_WEB_EM_MEDIA = { 200, 150, 100 };
+	private static double[] TAXAS_PROCESSAMENTO_APP_EM_MEDIA = { 0, 120, 80 };
+	private static double[] TAXAS_PROCESSAMENTO_BD_EM_MEDIA = { 0, 100, 60 };
 	private static double[] TAXAS_PROCESSAMENTO_BC_EM_MEDIA = { 10000, 10000,
 			10000 };
 	private static double TEMPO_SIMULACAO = 100;
 	private static double TRANSITORIO_INICIAL = 30;
 
 	private static String CMD = "java -Xms256M -Xmx1024M -cp \"lib/easyaccept.jar;"
-			+ "lib/simjava.jar;" + "lib/SimuladorInternetBanking.jar;"
+			+ "lib/simjava.jar;"
+			+ "lib/SimuladorInternetBanking.jar;"
 			+ "lib/SJGV.jar\" br.ufcg.edu.estimador.GatewaySimulador ";
 
-	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws IOException {
+
+		boolean[] tiposTestados = new boolean[TAXAS_CHEGADA_EM_MEDIA.length];
+
 		for (int numServidoresWeb = 1; numServidoresWeb <= NUMERO_MAXIMO_SERVIDORES; numServidoresWeb++) {
 			for (int numServidoresApp = 1; numServidoresApp <= NUMERO_MAXIMO_SERVIDORES; numServidoresApp++) {
 				if (numServidoresWeb + numServidoresApp < NUMERO_MAXIMO_SERVIDORES) {
 					int numServidoresBd = NUMERO_MAXIMO_SERVIDORES
 							- numServidoresWeb - numServidoresApp;
-					System.out.println("Web: " + numServidoresWeb + " App: "
-							+ numServidoresApp + " Bd: " + numServidoresBd);
+					boolean combinacaoPossivel = true;
 					for (int i = 0; i < TAXAS_CHEGADA_EM_MEDIA.length; i++) {
-						System.out.println("Testando taxa de chegada tipo " + (i + 1));
-						String argumentos = getArgumentos(
-								numServidoresWeb,
-								numServidoresApp,
-								numServidoresBd,
-								TAXAS_CHEGADA_EM_MEDIA[i][0],
-								TAXAS_CHEGADA_EM_MEDIA[i][1],
-								TAXAS_CHEGADA_EM_MEDIA[i][2],
-								TAXAS_PROCESSAMENTO_WEB_EM_MEDIA[0],
-								TAXAS_PROCESSAMENTO_WEB_EM_MEDIA[1],
-								TAXAS_PROCESSAMENTO_WEB_EM_MEDIA[2],
-								TAXAS_PROCESSAMENTO_BD_EM_MEDIA[0],
-								TAXAS_PROCESSAMENTO_BD_EM_MEDIA[1],
-								TAXAS_PROCESSAMENTO_APP_EM_MEDIA[0],
-								TAXAS_PROCESSAMENTO_APP_EM_MEDIA[1],
-								TAXAS_PROCESSAMENTO_BC_EM_MEDIA[0],
-								TAXAS_PROCESSAMENTO_BC_EM_MEDIA[1],
-								TAXAS_PROCESSAMENTO_BC_EM_MEDIA[2],
-								TEMPO_SIMULACAO
-								);
-						System.out.println(CMD + argumentos);
-						Process process = Runtime.getRuntime().exec(CMD + argumentos);
-						BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
-						String line = null;
-						while ((line = stdout.readLine()) != null) {
-							System.out.println(line);
-							if (line.equals("Fim!"))
-								break;
-						}
-						stdout.close();
-						process.destroy();
-					}
 
+						try {
+							entradaInvalida(TAXAS_CHEGADA_EM_MEDIA[i],
+									TAXAS_PROCESSAMENTO_WEB_EM_MEDIA,
+									numServidoresWeb);
+							entradaInvalida(TAXAS_CHEGADA_EM_MEDIA[i],
+									TAXAS_PROCESSAMENTO_BD_EM_MEDIA,
+									numServidoresBd);
+							entradaInvalida(TAXAS_CHEGADA_EM_MEDIA[i],
+									TAXAS_PROCESSAMENTO_APP_EM_MEDIA,
+									numServidoresApp);
+						} catch (Exception e) {
+							combinacaoPossivel &= false;
+							continue;
+						}
+						tiposTestados[i] = true;
+						combinacaoPossivel &= true;
+					}
+					if (combinacaoPossivel) {
+						System.out.println("Web: " + numServidoresWeb
+								+ " App: " + numServidoresApp + " Bd: "
+								+ numServidoresBd
+								+ " é uma combinação possível!");
+						for (int i = 0; i < TAXAS_CHEGADA_EM_MEDIA.length; i++) {
+							System.out
+									.println("Testando tipo " + (i + 1) + "!");
+							chamarSimulador(numServidoresWeb, numServidoresApp,
+									numServidoresBd, i);
+						}
+
+					}
 				}
 			}
+		}
+		System.out.println();
+		for (int i = 0; i < tiposTestados.length; i++) {
+			if (!tiposTestados[i])
+				System.out
+						.println("Não foi possível testar nenhuma configuração de servidores para o tipo "
+								+ (i + 1) + "!");
+		}
+
+	}
+
+	@SuppressWarnings("unchecked")
+	private static void chamarSimulador(int numServidoresWeb,
+			int numServidoresApp, int numServidoresBd, int i)
+			throws IOException {
+		String argumentos = getArgumentos(numServidoresWeb, numServidoresApp,
+				numServidoresBd, TAXAS_CHEGADA_EM_MEDIA[i][0],
+				TAXAS_CHEGADA_EM_MEDIA[i][1], TAXAS_CHEGADA_EM_MEDIA[i][2],
+				TAXAS_PROCESSAMENTO_WEB_EM_MEDIA[0],
+				TAXAS_PROCESSAMENTO_WEB_EM_MEDIA[1],
+				TAXAS_PROCESSAMENTO_WEB_EM_MEDIA[2],
+				TAXAS_PROCESSAMENTO_BD_EM_MEDIA[1],
+				TAXAS_PROCESSAMENTO_BD_EM_MEDIA[2],
+				TAXAS_PROCESSAMENTO_APP_EM_MEDIA[1],
+				TAXAS_PROCESSAMENTO_APP_EM_MEDIA[2],
+				TAXAS_PROCESSAMENTO_BC_EM_MEDIA[0],
+				TAXAS_PROCESSAMENTO_BC_EM_MEDIA[1],
+				TAXAS_PROCESSAMENTO_BC_EM_MEDIA[2], TEMPO_SIMULACAO, TRANSITORIO_INICIAL);
+		Process process = Runtime.getRuntime().exec(CMD + argumentos);
+		BufferedReader stdout = new BufferedReader(new InputStreamReader(
+				process.getInputStream()));
+		String line = null;
+		while ((line = stdout.readLine()) != null) {
+			System.out.println(line);
+			if (line.equals("Fim!"))
+				break;
+		}
+		stdout.close();
+		process.destroy();
+	}
+
+	private static void entradaInvalida(double[] chegada,
+			double[] processamento, int numServidores) throws Exception {
+		for (int i = 0; i < chegada.length; i++) {
+			if (processamento[i] != 0
+					&& chegada[i] >= numServidores * processamento[i])
+				throw new Exception();
 		}
 	}
 

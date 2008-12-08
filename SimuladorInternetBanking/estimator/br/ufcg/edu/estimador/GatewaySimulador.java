@@ -1,12 +1,14 @@
 package br.ufcg.edu.estimador;
 
+import java.io.File;
+
 import br.ufcg.edu.simulador.SimuladorInternetBanking;
 
 public class GatewaySimulador {
 
 	public static void main(String[] args) {
 		if (args.length < 17) {
-			System.err.println("São necessários 17 argumentos.");
+			System.err.println("São necessários 18 argumentos.");
 			System.exit(1);
 		}
 		
@@ -27,9 +29,11 @@ public class GatewaySimulador {
 		double taxaMediaProcessamentoBcApp = Double.parseDouble(args[14]);
 		double taxaMediaProcessamentoBcBd = Double.parseDouble(args[15]);
 		double tempoSimulacao = Double.parseDouble(args[16]);
+		double transitorioInicial = Double.parseDouble(args[17]);
 		
 		SimuladorInternetBanking simulador = new SimuladorInternetBanking();
-		simulador.setGeracaoGraficos(false);
+		simulador.setGeracaoGraficos(true);
+		simulador.setVisualizarGraficos(false);
 		simulador.setNumeroServidoresWeb(numeroServidoresWeb);
 		simulador.setNumeroServidoresApp(numeroServidoresApp);
 		simulador.setNumeroServidoresBd(numeroServidoresBd);
@@ -47,8 +51,10 @@ public class GatewaySimulador {
 		simulador.setTaxaMediaProcessamentoBcApp(taxaMediaProcessamentoBcApp);
 		simulador.setTaxaMediaProcessamentoBcBd(taxaMediaProcessamentoBcBd);
 		simulador.setTempoSimulacao(tempoSimulacao);
+		simulador.setTransitorioInicial(transitorioInicial);
 		simulador.simular();
-//		System.out.println(simulador.getUtilizacaoMedia("Web1"));
+		new File("graficos").mkdir();
+		new File("sim_graphs.sjg").renameTo(new File("graficos/sim_graphs_W" + numeroServidoresWeb + "_A" + numeroServidoresApp + "_B" + numeroServidoresBd + "_CA" + taxaMediaChegadaA + "_CB" + taxaMediaChegadaB + "_CC" + taxaMediaChegadaC + ".sjg"));
 		System.out.println("Fim!");
 	}
 
