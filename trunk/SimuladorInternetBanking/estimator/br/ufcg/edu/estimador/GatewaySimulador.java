@@ -55,7 +55,39 @@ public class GatewaySimulador {
 		simulador.simular();
 		new File("graficos").mkdir();
 		new File("sim_graphs.sjg").renameTo(new File("graficos/sim_graphs_W" + numeroServidoresWeb + "_A" + numeroServidoresApp + "_B" + numeroServidoresBd + "_CA" + taxaMediaChegadaA + "_CB" + taxaMediaChegadaB + "_CC" + taxaMediaChegadaC + ".sjg"));
+		
+		
+		double mediaRespostaServidoresWeb = 0.0;
+		double utilizacaoServidoresWeb = 0.0;
+		for (int i = 1; i <= numeroServidoresWeb; i++) {
+			mediaRespostaServidoresWeb += simulador.getTempoMedioResposta("Web" + i);
+			utilizacaoServidoresWeb += simulador.getUtilizacaoMedia("Web" + i);;
+		}
+		mediaRespostaServidoresWeb /= numeroServidoresWeb;
+		utilizacaoServidoresWeb /= numeroServidoresWeb;
+		
+		double mediaRespostaServidoresApp = 0.0;
+		double utilizacaoServidoresApp = 0.0;
+		for (int i = 1; i <= numeroServidoresApp; i++) {
+			mediaRespostaServidoresApp += simulador.getTempoMedioResposta("APP" + i);
+			utilizacaoServidoresApp += simulador.getUtilizacaoMedia("APP" + i);;
+		}
+		mediaRespostaServidoresApp /= numeroServidoresApp;
+		utilizacaoServidoresApp /= numeroServidoresApp;
+		
+		double mediaRespostaServidoresBd = 0.0;
+		double utilizacaoServidoresBd = 0.0;
+		for (int i = 1; i <= numeroServidoresBd; i++) {
+			mediaRespostaServidoresBd += simulador.getTempoMedioResposta("BD" + i);
+			utilizacaoServidoresBd += simulador.getUtilizacaoMedia("BD" + i);;
+		}
+		mediaRespostaServidoresBd /= numeroServidoresBd;
+		utilizacaoServidoresBd /= numeroServidoresBd;
 		System.out.println("Fim!");
+		System.out.println(mediaRespostaServidoresWeb + " " + mediaRespostaServidoresApp + " " +
+				mediaRespostaServidoresBd + " " +
+				utilizacaoServidoresWeb + " " + utilizacaoServidoresApp + " " +
+				utilizacaoServidoresBd);
 	}
 
 }
