@@ -28,12 +28,12 @@ public class ServidorAPP extends Sim_entity {
 		add_port(saida);
 		stat = new Sim_stat();
 		stat.add_measure(Sim_stat.UTILISATION);
-		stat.add_measure(Sim_stat.QUEUE_LENGTH);
-		stat.add_measure(Sim_stat.THROUGHPUT);
-		stat.add_measure(Sim_stat.WAITING_TIME);
-		stat.add_measure(Sim_stat.SERVICE_TIME);
+//		stat.add_measure(Sim_stat.QUEUE_LENGTH);
+//		stat.add_measure(Sim_stat.THROUGHPUT);
+//		stat.add_measure(Sim_stat.WAITING_TIME);
+//		stat.add_measure(Sim_stat.SERVICE_TIME);
 		stat.add_measure(Sim_stat.RESIDENCE_TIME);
-		stat.add_measure(Sim_stat.ARRIVAL_RATE);
+//		stat.add_measure(Sim_stat.ARRIVAL_RATE);
 		set_stat(stat);
 	}
 	

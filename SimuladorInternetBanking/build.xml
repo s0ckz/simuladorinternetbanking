@@ -4,6 +4,7 @@
 	<property name="lib" value="lib" />
 	<property name="source" value="src" />
 	<property name="acceptanceTests" value="acceptanceTests" />
+	<property name="estimator" value="estimator" />
 	<property name="jarName" value="${lib}/SimuladorInternetBanking.jar" />
 
 	<path id="simulador.class.path">
@@ -21,6 +22,7 @@
 		<mkdir dir="${classes}"/>
 		<javac srcdir="${source}" destdir="${classes}" debug="true" optimize="on" classpathref="simulador.class.path" />
 		<javac srcdir="${acceptanceTests}" destdir="${classes}" debug="true" optimize="on" classpathref="simulador.class.path" />
+		<javac srcdir="${estimator}" destdir="${classes}" debug="true" optimize="on" classpathref="simulador.class.path" />
 	</target>
 
 	<target name="jar" depends="compile">
