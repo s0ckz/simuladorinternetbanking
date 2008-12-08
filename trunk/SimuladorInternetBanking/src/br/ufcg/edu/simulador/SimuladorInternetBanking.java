@@ -47,7 +47,7 @@ public class SimuladorInternetBanking {
 	private double taxaMediaProcessamentoBcBd = 1000;
 	private double tempoSimulacao = 50;
 	
-	private long semente = (long) (Math.random()*1000000);
+	private long semente = initSemente();
 	
 	private boolean geracaoGraficos = true;
 
@@ -99,6 +99,7 @@ public class SimuladorInternetBanking {
 			Sim_system.link_ports(BALANCEADOR_DE_CARGA_B_D, SAIDA + i, nome, ENTRADA);
 		}
         Sim_system.set_termination_condition(Sim_system.TIME_ELAPSED, tempoSimulacao, true);
+//      Sim_system.set_output_analysis(Sim_system.IND_REPLICATIONS, 5, 0.95);
         Sim_system.generate_graphs(isGeracaoGraficos());
 		Sim_system.run();
 		if (isGeracaoGraficos()) {
@@ -258,6 +259,27 @@ public class SimuladorInternetBanking {
 
 	private boolean existemClientesClasseBouC() {
 		return taxaMediaChegadaB > ZERO_RATE || taxaMediaChegadaC > ZERO_RATE;
+	}
+	
+	private long initSemente() {
+		long candidatoAPrimo = (long) (Math.random()*10000000);
+		
+		if (candidatoAPrimo % 2 == 0)
+			candidatoAPrimo++;
+		
+		while (!isPrimo(candidatoAPrimo)) {
+			candidatoAPrimo += 2;
+		}
+		return candidatoAPrimo;
+	}
+
+	private boolean isPrimo(long candidatoAPrimo) {
+		double raiz = Math.sqrt(candidatoAPrimo);
+		for (int i = 3; i <= raiz; i++) {
+			if (candidatoAPrimo % i == 0)
+				return false;
+		}
+		return true;
 	}
 	
 }
