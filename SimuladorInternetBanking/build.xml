@@ -3,6 +3,7 @@
 	<property name="classes" value="bin" />
 	<property name="lib" value="lib" />
 	<property name="source" value="src" />
+	<property name="acceptanceTests" value="acceptanceTests" />
 	<property name="jarName" value="${lib}/SimuladorInternetBanking.jar" />
 
 	<path id="simulador.class.path">
@@ -19,6 +20,7 @@
 	<target name="compile">
 		<mkdir dir="${classes}"/>
 		<javac srcdir="${source}" destdir="${classes}" debug="true" optimize="on" classpathref="simulador.class.path" />
+		<javac srcdir="${acceptanceTests}" destdir="${classes}" debug="true" optimize="on" classpathref="simulador.class.path" />
 	</target>
 
 	<target name="jar" depends="compile">
@@ -40,12 +42,4 @@
 		</java>
 	</target>
 	
-	<target name="TA01" depends="jar">
-		<echo>Iniciando testes de aceitacao 01</echo>
-		<java classpathref="simulador.class.path" classname="easyaccept.EasyAccept">
-			<arg value="br.ufcg.edu.simulador.SimuladorInternetBanking"/>
-			<arg value="acceptanceTests/TA01.txt"/>
-		</java>
-	</target>
-
 </project>
