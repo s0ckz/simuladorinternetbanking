@@ -10,7 +10,7 @@ setSemente 35264562131
 setGeracaoGraficos false
 
 # Modificando o número inicial de servidores.
-# M/M/3
+# 3 M/M/1 (em série)
 setNumeroServidoresWeb 1
 setNumeroServidoresApp 1
 setNumeroServidoresBd 1

@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="acceptanceTests"/>
+	<classpathentry kind="src" path="estimator"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/simjava.jar" sourcepath="simjava2/source"/>
 	<classpathentry kind="lib" path="lib/SJGV.jar"/>
