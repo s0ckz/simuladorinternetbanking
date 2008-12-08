@@ -3,14 +3,11 @@ package br.ufcg.edu.simulador.entidades;
 import eduni.simjava.Sim_entity;
 import eduni.simjava.Sim_event;
 import eduni.simjava.Sim_port;
-import eduni.simjava.Sim_stat;
 import eduni.simjava.Sim_system;
 import eduni.simjava.distributions.ContinuousGenerator;
 import eduni.simjava.distributions.Sim_negexp_obj;
 
 public class BalanceadorDeCarga extends Sim_entity {
-	
-    private Sim_stat stat;
 	
 	private Sim_port entrada;
 	
